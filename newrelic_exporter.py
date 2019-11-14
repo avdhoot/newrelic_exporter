@@ -29,7 +29,10 @@ class NewrelicCollector(object):
     for metric in metrics:
       for app in resp.json().get('applications',{}):
         if app.get('application_summary'):
-          metrics[metric].add_metric([app['name']], app['application_summary'][metric])
+          try:
+            metrics[metric].add_metric([app['name']], app['application_summary'][metric])
+          except KeyError:
+            pass
       yield metrics[metric]
 
 @click.command()
